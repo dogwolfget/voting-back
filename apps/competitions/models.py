@@ -19,6 +19,22 @@ class Competition(TimestampModel):
     def __str__(self):
         return f'{self.name} by {self.author.email}'
 
+    @property
+    def valid(self):
+        return self.contestants.count() > 1
+
+    @property
+    def max_size(self):
+        total_size = self.contestants.count()
+        current_size = 2
+        if current_size >= total_size:
+            return current_size
+
+        while current_size < total_size:
+            current_size *= 2
+
+        return int(current_size / 2)
+
 
 class Contestant(TimestampModel):
     class Meta:
@@ -31,3 +47,14 @@ class Contestant(TimestampModel):
 
     def __str__(self):
         return f'{self.competition.name} choice {self.name}'
+
+    def save(self, *args, **kwargs):
+        if self.pk:
+            return super().save(*args, **kwargs)
+
+        cover = self.cover
+        self.cover = None
+        super().save(*args, **kwargs)
+        kwargs.pop('force_insert', None)
+        self.cover = cover
+        return self.save(update_fields=['cover'])

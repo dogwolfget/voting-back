@@ -5,7 +5,6 @@ from django.contrib.auth.models import (
 from django.db import models
 
 from apps.core.models import TimestampModel
-
 from apps.users.managers import UserManager
 
 

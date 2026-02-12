@@ -1,6 +1,5 @@
 from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView
 
-from apps.competitions.decorators import is_owner
 from apps.competitions.models import Competition
 from apps.competitions.serializers import CompetitionSerializer
 
@@ -29,14 +28,16 @@ class CompetitionDetailAPIView(RetrieveUpdateDestroyAPIView):
     lookup_field = 'pk'
     lookup_url_kwarg = 'competition_pk'
 
-    @is_owner
+    def get_queryset(self):
+        if self.request.method == 'GET':
+            return self.queryset
+        return self.queryset.filter(author=self.request.user)
+
     def put(self, request, *args, **kwargs):
         return super().put(request, *args, **kwargs)
 
-    @is_owner
     def patch(self, request, *args, **kwargs):
         return super().put(request, *args, **kwargs)
 
-    @is_owner
     def delete(self, request, *args, **kwargs):
         return super().put(request, *args, **kwargs)
