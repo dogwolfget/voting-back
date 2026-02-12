@@ -2,5 +2,5 @@ from django.apps import AppConfig
 
 
 class VotesConfig(AppConfig):
-    name = 'apps.votes'
-    verbose_name = 'Votes'
+    name = 'apps.competitions'
+    verbose_name = 'Competitions'
