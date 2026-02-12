@@ -21,3 +21,6 @@ class User(PermissionsModel, TimestampModel, AbstractBaseUser):
     email = models.EmailField(verbose_name='Email', unique=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.email

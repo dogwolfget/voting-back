@@ -34,6 +34,7 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     "apps.authentication",
     "apps.core",
+    "apps.votes",
     "apps.users",
 ]
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -111,5 +112,8 @@ USE_I18N = True
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
-STATIC_URL = 'static/'
-MEDIA_ROOT = BASE_DIR / 'media'
+STATIC_URL = os.getenv("STATIC_URL", "/static/")
+STATIC_ROOT = Path(os.getenv("STATIC_ROOT", BASE_DIR / "staticfiles")).resolve()
+STATICFILES_DIRS = [BASE_DIR / "static"]
+MEDIA_URL = os.getenv("MEDIA_URL", "/media/")
+MEDIA_ROOT = Path(os.getenv("MEDIA_ROOT", BASE_DIR / "media")).resolve()
