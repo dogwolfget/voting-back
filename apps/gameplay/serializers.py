@@ -26,5 +26,5 @@ class DuelSerializer(serializers.ModelSerializer):
         fields = ('left', 'right')
 
 
-class DuelChooseSerializer(serializers.Serializer):
+class WinnerSerializer(serializers.Serializer):
     winner = serializers.CharField()

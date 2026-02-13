@@ -10,7 +10,7 @@ from apps.gameplay.serializers import (
     PlaythroughCreateSerializer,
     PlaythroughSerializer,
     DuelSerializer,
-    DuelChooseSerializer,
+    WinnerSerializer,
 )
 
 
@@ -45,8 +45,12 @@ class PlaythroughDetailView(RetrieveAPIView):
 
 class DuelDetailView(GenericAPIView):
     queryset = Playthrough.objects.all()
+    serializer_class = WinnerSerializer
     lookup_field = 'pk'
     lookup_url_kwarg = 'playthrough_pk'
+
+    def get_serializer_class(self, *args, **kwargs):
+        return self.serializer_class if kwargs.get('type') != 'duel' else DuelSerializer
 
     def get(self, request, *args, **kwargs):
         playthrough = self.get_object()
@@ -55,14 +59,14 @@ class DuelDetailView(GenericAPIView):
             playthrough.create_stage()
             duel = playthrough.get_current_duel()
         elif duel.winner:
-            serializer = DuelChooseSerializer({'winner': playthrough.winner.name})
+            serializer = self.get_serializer({'winner': playthrough.winner.name})
             return Response(status=status.HTTP_200_OK, data=serializer.data)
 
-        serializer = DuelSerializer(duel)
+        serializer = self.get_serializer(duel, type='duel')
         return Response(status=status.HTTP_200_OK, data=serializer.data)
 
     def post(self, request, *args, **kwargs):
-        serializer = DuelChooseSerializer(data=request.data)
+        serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         playthrough = self.get_object()
         duel = playthrough.get_current_duel()
