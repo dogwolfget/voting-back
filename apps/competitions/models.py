@@ -30,7 +30,7 @@ class Competition(TimestampModel):
         if current_size >= total_size:
             return current_size
 
-        while current_size < total_size:
+        while current_size <= total_size:
             current_size *= 2
 
         return int(current_size / 2)

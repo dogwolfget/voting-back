@@ -15,7 +15,7 @@ class PlaythroughCreateSerializer(serializers.Serializer):
 
     @staticmethod
     def validate_size(value):
-        if value <= 0 or (value & (value - 1)) == 0:
+        if value <= 0 or (value & (value - 1)) != 0:
             raise serializers.ValidationError('Size must be power of 2')
         return value
 

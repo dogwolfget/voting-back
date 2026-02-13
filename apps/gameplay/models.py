@@ -47,7 +47,6 @@ class Playthrough(TimestampModel):
                 left=contestants[i],
                 right=contestants[i + 1],
                 stage=STAGES.get(size, f'LAST_{size}'),
-                order=(i // 2)
             )
             for i in range(0, len(contestants), 2)
         ]
@@ -61,7 +60,6 @@ class Playthrough(TimestampModel):
                 left=prev_duels[i].winner,
                 right=prev_duels[i + 1].winner,
                 stage=STAGES.get(size, f'LAST_{size}'),
-                order=(i // 2)
             )
             for i in range(0, len(prev_duels), 2)
         ]
@@ -92,7 +90,6 @@ class Duel(TimestampModel):
         blank=True,
     )
     stage = models.CharField(max_length=100)
-    order = models.PositiveIntegerField()
 
     def __str__(self):
         if self.winner:

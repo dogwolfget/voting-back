@@ -7,11 +7,11 @@ class DuelInline(admin.TabularInline):
     model = Duel
     verbose_name_plural = 'Duels'
     extra = 0
-    fields = ('left', 'right', 'winner')
+    fields = ('stage', 'left', 'right', 'winner')
+    readonly_fields = ('stage', 'left', 'right', 'winner')
 
 
 @admin.register(Playthrough)
 class PlaythroughAdmin(admin.ModelAdmin):
     list_display = ('pk', 'user', 'competition')
-
     inlines = [DuelInline]
