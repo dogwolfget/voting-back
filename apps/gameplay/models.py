@@ -21,7 +21,7 @@ class Playthrough(TimestampModel):
 
     @property
     def winner(self):
-        if final := self.duels.filter(stage="FINAL").first():
+        if final := self.duels.filter(stage='FINAL').first():
             return final.winner
         return None
 
@@ -93,15 +93,15 @@ class Duel(TimestampModel):
 
     def __str__(self):
         if self.winner:
-            sign = ">" if self.winner == self.left else "<"
+            sign = '>' if self.winner == self.left else '<'
             return f'{self.left.name} {sign} {self.right.name}'
         return f'{self.left.name} or {self.right.name}'
 
     def choose(self, side: str):
         if not self.winner:
-            if side == "left":
+            if side == 'left':
                 self._choose_left()
-            elif side == "right":
+            elif side == 'right':
                 self._choose_right()
 
     def _choose_left(self):

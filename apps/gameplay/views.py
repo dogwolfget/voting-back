@@ -21,11 +21,11 @@ class PlaythroughCreateView(GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        competition = get_object_or_404(Competition, pk=serializer.validated_data["competition_id"])
+        competition = get_object_or_404(Competition, pk=serializer.validated_data['competition_id'])
         if not competition.valid:
-            raise ValidationError(detail={"competition": "Competition does not have enough contestants"})
+            raise ValidationError(detail={'competition': 'Competition does not have enough contestants'})
 
-        size = serializer.validated_data.get("size", competition.max_size)
+        size = serializer.validated_data.get('size', competition.max_size)
         playthrough = Playthrough.objects.create(competition=competition, user=request.user)
         playthrough.create_stage(size=size)
 
@@ -55,7 +55,7 @@ class DuelDetailView(GenericAPIView):
             playthrough.create_stage()
             duel = playthrough.get_current_duel()
         elif duel.winner:
-            serializer = DuelChooseSerializer({"winner": playthrough.winner.name})
+            serializer = DuelChooseSerializer({'winner': playthrough.winner.name})
             return Response(status=status.HTTP_200_OK, data=serializer.data)
 
         serializer = DuelSerializer(duel)
@@ -66,5 +66,5 @@ class DuelDetailView(GenericAPIView):
         serializer.is_valid(raise_exception=True)
         playthrough = self.get_object()
         duel = playthrough.get_current_duel()
-        duel.choose(serializer.validated_data["winner"])
-        return Response(status=status.HTTP_201_CREATED, data={"message": "OK"})
+        duel.choose(serializer.validated_data['winner'])
+        return Response(status=status.HTTP_201_CREATED, data={'message': 'OK'})
