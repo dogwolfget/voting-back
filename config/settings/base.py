@@ -129,5 +129,8 @@ USE_TZ = True
 STATIC_URL = os.getenv("STATIC_URL", "/static/")
 STATIC_ROOT = Path(os.getenv("STATIC_ROOT", BASE_DIR / "staticfiles")).resolve()
 STATICFILES_DIRS = [BASE_DIR / "static"]
+for dir_ in STATICFILES_DIRS:
+    if not os.path.exists(dir_):
+        os.mkdir(dir_)
 MEDIA_URL = os.getenv("MEDIA_URL", "/media/")
 MEDIA_ROOT = Path(os.getenv("MEDIA_ROOT", BASE_DIR / "media")).resolve()
