@@ -23,6 +23,7 @@ htmlcov
 
 # static
 static
+staticfiles
 media
 
 # env

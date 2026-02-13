@@ -1,0 +1,39 @@
+services:
+  back:
+    restart: always
+    image: vote_service:latest
+    volumes:
+      - .:/app
+      - /app/.venv
+    ports:
+      - "8000:8000"
+    networks:
+      - vote_network
+    environment:
+      DB_USER: user
+      DB_PASSWORD: password
+      DB_HOST: postgres
+      DB_NAME: db
+    depends_on:
+      - postgres
+
+  postgres:
+    restart: always
+    image: postgres:17
+    networks:
+      - vote_network
+    environment:
+      POSTGRES_DB: db
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: user
+    volumes:
+      - postgres_volume:/var/lib/postgresql/data
+
+
+networks:
+  vote_network:
+    name: vote_network
+
+
+volumes:
+  postgres_volume:

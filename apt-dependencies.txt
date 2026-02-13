@@ -1,0 +1,5 @@
+ca-certificates
+curl
+gcc
+git
+python3-dev
