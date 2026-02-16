@@ -32,12 +32,3 @@ class CompetitionDetailAPIView(RetrieveUpdateDestroyAPIView):
         if self.request.method == 'GET':
             return self.queryset
         return self.queryset.filter(author=self.request.user)
-
-    def put(self, request, *args, **kwargs):
-        return super().put(request, *args, **kwargs)
-
-    def patch(self, request, *args, **kwargs):
-        return super().put(request, *args, **kwargs)
-
-    def delete(self, request, *args, **kwargs):
-        return super().put(request, *args, **kwargs)

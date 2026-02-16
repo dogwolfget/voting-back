@@ -15,7 +15,8 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-t)w%&*urm365l@nd#^8uf4-%my
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', True)
 
-ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
+ALLOWED_HOSTS = ['https://voting-back-production.up.railway.app']
 
 # Application definition
 DJANGO_APPS = [
@@ -27,10 +28,11 @@ DJANGO_APPS = [
     'django.contrib.staticfiles',
 ]
 THIRD_PARTY_APPS = [
+    'corsheaders',
     'debug_toolbar',
+    'drf_yasg',
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
-    'drf_yasg',
 ]
 LOCAL_APPS = [
     'apps.authentication',
@@ -42,6 +44,7 @@ LOCAL_APPS = [
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -129,3 +132,6 @@ for dir_ in STATICFILES_DIRS:
         os.mkdir(dir_)
 MEDIA_URL = os.getenv('MEDIA_URL', '/media/')
 MEDIA_ROOT = Path(os.getenv('MEDIA_ROOT', BASE_DIR / 'media')).resolve()
+
+# CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', '*').split(',')
+CORS_ALLOWED_ORIGINS = ['https://vote-back-fe-production.up.railway.app']
