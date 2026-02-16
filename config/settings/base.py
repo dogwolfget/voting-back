@@ -16,8 +16,8 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-t)w%&*urm365l@nd#^8uf4-%my
 DEBUG = os.getenv('DEBUG', True)
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
-CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', '*').split(',')
-CSRF_TRUSTED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', '*').split(',')
+CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', 'https://localhost').split(',')
+CSRF_TRUSTED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', 'https://localhost').split(',')
 
 # Application definition
 DJANGO_APPS = [
@@ -30,7 +30,6 @@ DJANGO_APPS = [
 ]
 THIRD_PARTY_APPS = [
     'corsheaders',
-    'debug_toolbar',
     'drf_yasg',
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
