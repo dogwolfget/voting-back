@@ -15,8 +15,8 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-t)w%&*urm365l@nd#^8uf4-%my
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', True)
 
-# ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
-ALLOWED_HOSTS = ['https://voting-back-production.up.railway.app']
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
+CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', '*').split(',')
 
 # Application definition
 DJANGO_APPS = [
@@ -132,6 +132,3 @@ for dir_ in STATICFILES_DIRS:
         os.mkdir(dir_)
 MEDIA_URL = os.getenv('MEDIA_URL', '/media/')
 MEDIA_ROOT = Path(os.getenv('MEDIA_ROOT', BASE_DIR / 'media')).resolve()
-
-# CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', '*').split(',')
-CORS_ALLOWED_ORIGINS = ['https://vote-back-fe-production.up.railway.app']
