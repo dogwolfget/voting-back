@@ -112,6 +112,9 @@ for dir_ in STATICFILES_DIRS:
 MEDIA_URL = os.getenv('MEDIA_URL', '/media/')
 MEDIA_ROOT = Path(os.getenv('MEDIA_ROOT', BASE_DIR / 'media')).resolve()
 STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
