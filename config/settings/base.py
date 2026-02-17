@@ -115,3 +115,39 @@ for dir_ in STATICFILES_DIRS:
         os.mkdir(dir_)
 MEDIA_URL = os.getenv('MEDIA_URL', '/media/')
 MEDIA_ROOT = Path(os.getenv('MEDIA_ROOT', BASE_DIR / 'media')).resolve()
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "filters": {
+        "require_debug_false": {
+            "()": "django.utils.log.RequireDebugFalse",
+        },
+        "require_debug_true": {
+            "()": "django.utils.log.RequireDebugTrue",
+        },
+    },
+    "formatters": {
+        "verbose": {
+            "format": "[{asctime} {module}:{lineno}>{funcName} - {levelname}/{processName}] {message}",
+            "style": "{",
+        }
+    },
+    "handlers": {
+        "console": {
+            "level": "INFO",
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        },
+        "mail_admins": {
+            "level": "ERROR",
+            "filters": ["require_debug_false"],
+            "class": "django.utils.log.AdminEmailHandler",
+            "formatter": "verbose",
+        },
+    },
+    "root": {
+        "handlers": ["console", "mail_admins"],
+        "level": "INFO",
+    },
+}
