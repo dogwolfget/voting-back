@@ -60,3 +60,4 @@ def test_choose_cities_failure(api_client, country_with_cities, body, expected_r
 
     assert response.status_code == status.HTTP_400_BAD_REQUEST
     assert response.json() == expected_response
+    assert Choice.objects.count() == 0

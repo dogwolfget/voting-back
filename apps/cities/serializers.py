@@ -54,7 +54,7 @@ class CityStatSerializer(CitySerializer):
     def get_stats(obj: City):
         attempts = Choice.objects.get_city_attempts(obj).count()
         wins = Choice.objects.get_city_wins(obj).count()
-        wr = round(wins / attempts, 2) if attempts else 0
+        wr = round(wins / attempts, 4) * 100 if attempts else 0
         return {
             "attempts": attempts,
             "wins": wins,
