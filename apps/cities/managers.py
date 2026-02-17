@@ -1,5 +1,10 @@
+from typing import TYPE_CHECKING
+
 from django.db import models
 from django.db.models import Q
+
+if TYPE_CHECKING:
+    from apps.cities.models import City
 
 
 class ChoiceManager(models.Manager):
