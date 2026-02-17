@@ -1,6 +1,7 @@
 from django.db import models
 from django_random_queryset import RandomManager
 
+from apps.cities.managers import ChoiceManager
 from apps.core.models import TimestampModel, NameModel
 
 
@@ -38,6 +39,8 @@ class Choice(TimestampModel):
     class Meta:
         verbose_name = 'Choice'
         verbose_name_plural = 'Choices'
+
+    objects = ChoiceManager()
 
     left = models.ForeignKey(City, related_name='choices_as_left', on_delete=models.CASCADE)
     right = models.ForeignKey(City, related_name='choices_as_right', on_delete=models.CASCADE)
