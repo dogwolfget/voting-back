@@ -39,4 +39,4 @@ jobs:
           pip install uv
           uv sync
       - name: Run tests
-        run: pytest
+        run: uv run pytest
