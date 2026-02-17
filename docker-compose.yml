@@ -10,6 +10,7 @@ services:
     networks:
       - vote_network
     environment:
+      DJANGO_SETTINGS_MODULE: config.settings.production
       DB_USER: user
       DB_PASSWORD: password
       DB_HOST: postgres
