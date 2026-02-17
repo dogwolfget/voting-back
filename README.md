@@ -7,3 +7,11 @@ docker compose up -d
 ```shell
 localhost:8000/docs/
 ```
+### Tests
+```shell
+pytest -v -rP
+```
+### Coverage
+```shell
+coverage erase && coverage run -m pytest && coverage report
+```

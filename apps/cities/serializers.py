@@ -27,9 +27,14 @@ class ChooseCitySerializer(serializers.ModelSerializer):
         extra_kwargs = {'winner': {'write_only': True}}
 
     def validate(self, attrs):
+        if attrs['left'] == attrs['right']:
+            raise serializers.ValidationError({
+                'left': 'Have to differ from right',
+                'right': 'Have to differ from left',
+            })
         winner = attrs.get('winner')
-        if winner and winner not in (attrs['left'], attrs['right']):
-            raise serializers.ValidationError({'winner': 'Must match either left or right'})
+        if not winner or winner not in (attrs['left'], attrs['right']):
+            raise serializers.ValidationError({'winner': 'Have to match either left or right'})
         return super().validate(attrs)
 
     def to_representation(self, instance):

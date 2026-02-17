@@ -10,7 +10,9 @@ class CityChoiceView(CreateAPIView, RetrieveAPIView):
     serializer_class = ChooseCitySerializer
 
     def get_object(self):
-        return Choice(left=City.objects.random().first(), right=City.objects.random().first())
+        left = City.objects.random().first()
+        right = City.objects.exclude(pk=left.pk).random().first()
+        return Choice(left=left, right=right)
 
     def post(self, request, *args, **kwargs):
         super().post(request, *args, **kwargs)
