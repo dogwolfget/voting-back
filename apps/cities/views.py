@@ -1,9 +1,10 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.generics import CreateAPIView, RetrieveAPIView, ListAPIView
 from rest_framework.response import Response
 
 from apps.cities.models import City, Choice
-from apps.cities.serializers import ChooseCitySerializer, CityStatSerializer
+from apps.cities.serializers import ChooseCitySerializer, CityStatsSerializer, CityAdvancedStatsSerializer
 
 
 class CityChoiceView(CreateAPIView, RetrieveAPIView):
@@ -19,6 +20,14 @@ class CityChoiceView(CreateAPIView, RetrieveAPIView):
         return Response(status=status.HTTP_201_CREATED, data={'message': 'OK'})
 
 
-class CityStatsView(ListAPIView):
+class CityStatsListView(ListAPIView):
     queryset = City.objects.all()
-    serializer_class = CityStatSerializer
+    serializer_class = CityStatsSerializer
+
+
+class CityStatsDetailView(RetrieveAPIView):
+    queryset = City.objects.all()
+    serializer_class = CityAdvancedStatsSerializer
+
+    def get_object(self):
+        return get_object_or_404(City, country__name=self.kwargs['country'], name=self.kwargs['city'])

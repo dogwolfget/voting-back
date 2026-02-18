@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from apps.cities.dtos import StatDTO
 from apps.cities.models import City, Choice, Country
 
 
@@ -44,7 +45,7 @@ class ChooseCitySerializer(serializers.ModelSerializer):
         return representation
 
 
-class CityStatSerializer(CitySerializer):
+class CityStatsSerializer(CitySerializer):
     stats = serializers.SerializerMethodField()
 
     class Meta(CitySerializer.Meta):
@@ -54,9 +55,33 @@ class CityStatSerializer(CitySerializer):
     def get_stats(obj: City):
         attempts = Choice.objects.get_city_attempts(obj).count()
         wins = Choice.objects.get_city_wins(obj).count()
-        wr = round(wins / attempts, 4) * 100 if attempts else 0
-        return {
-            "attempts": attempts,
-            "wins": wins,
-            "w/r": wr,
-        }
+        return StatDTO(attempts=attempts, wins=wins).as_dict()
+
+
+class CityAdvancedStatsSerializer(CityStatsSerializer):
+    stats = serializers.SerializerMethodField()
+    best_vs = serializers.SerializerMethodField()
+    worst_vs = serializers.SerializerMethodField()
+
+    class Meta(CityStatsSerializer.Meta):
+        fields = CityStatsSerializer.Meta.fields + ('best_vs', 'worst_vs')
+
+    @staticmethod
+    def get_best_vs(obj: City):
+        opponents = obj.get_stats()
+        data = [
+            {'name': f'{k.name} ({k.country.name})', 'stats': v.as_dict()}
+            for k, v in opponents.items() if v.winrate > 50
+        ]
+        data.sort(key=lambda x: x['stats']['winrate'])
+        return data[:5]
+
+    @staticmethod
+    def get_worst_vs(obj: City):
+        opponents = obj.get_stats()
+        data = [
+            {'name': f'{k.name} ({k.country.name})', 'stats': v.as_dict()}
+            for k, v in opponents.items() if v.winrate < 50
+        ]
+        data.sort(key=lambda x: x['stats']['winrate'], reverse=True)
+        return data[:5]

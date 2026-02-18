@@ -21,6 +21,6 @@ class ChoiceAdmin(admin.ModelAdmin):
     list_display = ('str_display',)
     search_fields = ('left', 'right', 'winner')
 
-    @admin.display(description="str")
+    @admin.display(description='str')
     def str_display(self, obj):
         return str(obj)

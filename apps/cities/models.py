@@ -1,6 +1,8 @@
 from django.db import models
+from django.db.models import Q
 from django_random_queryset import RandomManager
 
+from apps.cities.dtos import StatDTO
 from apps.cities.managers import ChoiceManager
 from apps.core.models import TimestampModel, NameModel
 
@@ -32,7 +34,19 @@ class City(TimestampModel, NameModel):
     photo = models.ImageField(upload_to=city_photo_file_path, null=True, blank=True)
 
     def __str__(self):
-        return f"{self.name}, {self.country}"
+        return f'{self.name} ({self.country})'
+
+    def get_stats(self):
+        opponents: dict[City, StatDTO] = dict()
+        fights = Choice.objects.filter(Q(left=self) | Q(right=self))
+        for fight in fights:
+            opponent = fight.left if fight.right == self else fight.right
+            if opponent not in opponents:
+                opponents[opponent] = StatDTO()
+            opponents[opponent].attempts += 1
+            if fight.winner == self:
+                opponents[opponent].wins += 1
+        return opponents
 
 
 class Choice(TimestampModel):
@@ -52,4 +66,4 @@ class Choice(TimestampModel):
             sign = '/'
         elif self.winner == self.right:
             sign = '<'
-        return f"{self.left} {sign} {self.right}"
+        return f'{self.left} {sign} {self.right}'
