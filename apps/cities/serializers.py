@@ -52,7 +52,7 @@ class CityStatsSerializer(CitySerializer):
         fields = CitySerializer.Meta.fields + ('stats',)
 
     @staticmethod
-    def get_stats(obj: City):
+    def get_stats(obj: City) -> dict[str, int | float]:
         attempts = Choice.objects.get_city_attempts(obj).count()
         wins = Choice.objects.get_city_wins(obj).count()
         return StatDTO(attempts=attempts, wins=wins).as_dict()
@@ -70,7 +70,7 @@ class CityAdvancedStatsSerializer(CityStatsSerializer):
     def get_best_vs(obj: City):
         opponents = obj.get_stats()
         data = [
-            {'name': f'{k.name} ({k.country.name})', 'stats': v.as_dict()}
+            {'name': str(k), 'stats': v.as_dict()}
             for k, v in opponents.items() if v.winrate > 50
         ]
         data.sort(key=lambda x: x['stats']['winrate'])
@@ -80,7 +80,7 @@ class CityAdvancedStatsSerializer(CityStatsSerializer):
     def get_worst_vs(obj: City):
         opponents = obj.get_stats()
         data = [
-            {'name': f'{k.name} ({k.country.name})', 'stats': v.as_dict()}
+            {'name': str(k), 'stats': v.as_dict()}
             for k, v in opponents.items() if v.winrate < 50
         ]
         data.sort(key=lambda x: x['stats']['winrate'], reverse=True)

@@ -36,10 +36,13 @@ class City(TimestampModel, NameModel):
     def __str__(self):
         return f'{self.name} ({self.country})'
 
-    def get_stats(self):
-        opponents: dict[City, StatDTO] = dict()
+    def get_stats(self) -> dict['City', StatDTO]:
+        opponents = dict()
         fights = Choice.objects.filter(Q(left=self) | Q(right=self))
         for fight in fights:
+            if not fight.winner:
+                continue
+
             opponent = fight.left if fight.right == self else fight.right
             if opponent not in opponents:
                 opponents[opponent] = StatDTO()
